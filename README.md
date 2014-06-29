@@ -1,30 +1,23 @@
-# Typefactory
+# Тайпфектори
 
-Gem prepares text for publication on the web. This release is first alpha version.
+Гем для подготовки текстов к публикации в вебе (проще говоря — типограф). Альфа-версия расставляет лишь правильные кавычки до третьего уровня включительно.
 
-## Installation
+## Установка
 
-Add this line to your application's Gemfile:
+Добавьте строку в Gemfile приложения:
 
     gem 'typefactory', '0.0.1'
 
-And then execute:
+После выполните: `bundle install`
 
-    $ bundle install
+## Использование
 
-Or install it yourself as:
+Гему потребуется файл инициализации, содержащий ряд настроек. Стандартную версию файла можно сгенерировать командой `rails generate typefactory config`
 
-    $ gem install typefactory
-
-## Usage
-
-Add initializer with
-
-    $ rails generate typefactory config
-
-Use typefactory for any String variables new method `typeit`:
+После этого в объектах класса String можно использовать метод `typeit`. 
     
-    `'Какой-то "странный" текст, "наборанный "кириллицей""'.typeit`
+    <%= @product.description.typeit %>
+    'Какой-то "странный" текст, "наборанный "кириллицей""'.typeit
 
 ## Contributing
 
