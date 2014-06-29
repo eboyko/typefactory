@@ -24,7 +24,7 @@ Add initializer with
 
 Use typefactory for any String variables new method `typeit`:
     
-    `'Какой-то "странный" текст, "наборанный "кириллицей"".typeit'`
+    `'Какой-то "странный" текст, "наборанный "кириллицей""'.typeit`
 
 ## Contributing
 
