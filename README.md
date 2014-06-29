@@ -22,6 +22,10 @@ Add initializer with
 
     $ rails generate typefactory config
 
+Use typefactory for any String variables new method `typeit`:
+    
+    `'Какой-то "странный" текст, "наборанный "кириллицей"".typeit'`
+
 ## Contributing
 
 1. Fork it ( https://github.com/eboyko/typefactory/fork )
