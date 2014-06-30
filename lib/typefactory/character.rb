@@ -15,28 +15,12 @@ module Typefactory
       end
     end
 
-    def has_space_before?
-      if @index == 0 or @parent[@index-1].blank?
-        true
-      else
-        false
-      end
-    end
-
-    def has_space_after?
-      if @index == @parent.length or @parent[@index+1].blank?
-        true
-      else
-        false
-      end
-    end
-
     def has_space_before_in(count=4)
       count  = (@index-count<0) ? count+(@index-count) : count
       string = @parent[@index-count, count]
       if @index <= count
         1
-      elsif /\s|>$/.match(string) or /\s([\S]{1,3})$/.match(string)
+      elsif /\s|>|\-$/.match(string) or /\s([\S]{1,3})$/.match(string)
         count - string.index(/\s/).to_i
       else
         nil
