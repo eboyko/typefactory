@@ -5,6 +5,7 @@ require 'active_support/dependencies'
 module Typefactory
 
   mattr_accessor :quotes_marks
+  mattr_accessor :non_breaking_space
 
   def self.setup
     yield self

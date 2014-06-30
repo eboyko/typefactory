@@ -4,4 +4,5 @@ Typefactory.setup do |config|
     { :left => "&bdquo;", :right => "&ldquo;" },
     { :left => "&lsquo;", :right => "&rsquo;" }
   ]
+  config.non_breaking_space = "&nbsp;"
 end

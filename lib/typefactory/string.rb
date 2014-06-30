@@ -4,6 +4,7 @@ module Typefactory
     def prepare(params = nil)
       self.cleanup
       self.set_quotes
+      self.bind_short_words
     end
 
     def characters
@@ -44,6 +45,12 @@ module Typefactory
         end
       end
       result.gsub(/<([^\/].*?)>/) { |block| block.gsub(/'/, '"') }
+      self.replace(result)
+    end
+
+    # Привязываем короткие слова неразрывными пробелами
+    def bind_short_words
+      self.gsub(/\s([a-zA-Z,а-яА-Я]{1,2})\s/) { |word| " #{$1}#{Typefactory::non_breaking_space}" }
     end
 
   end
