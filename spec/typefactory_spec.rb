@@ -54,4 +54,11 @@ RSpec.describe 'Typefactory' do
     end
   end
 
+  describe 'Glyphs' do
+    it 'Process long dashes' do
+      example = 'Писец - не только ценный мех'
+      expect(example.prepare).to eq('Писец — не только ценный мех')
+    end
+  end
+
 end

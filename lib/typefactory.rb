@@ -1,3 +1,4 @@
+require 'typefactory/core_ext'
 require 'active_support/dependencies'
 
 module Typefactory

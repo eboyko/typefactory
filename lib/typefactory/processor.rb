@@ -15,6 +15,7 @@ module Typefactory
       escape_html
       quotes
       descape_html
+      emdashes
       short_words
       @buffer
     end
@@ -105,6 +106,10 @@ module Typefactory
 
     def short_words
       @buffer.gsub!(/\s([a-zA-Z,а-яА-Я]{1,2})\s/) { |word| " #{$1}#{Typefactory::glyphs[:nbsp][:sign]}" }
+    end
+
+    def emdashes
+      @buffer.gsub!(/\s\-\s/, "#{Typefactory::glyphs[:nbsp][:sign]}#{Typefactory::glyphs[:mdash][:sign]} ")
     end
 
   end
