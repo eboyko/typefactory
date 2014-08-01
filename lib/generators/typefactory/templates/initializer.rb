@@ -1,8 +1,9 @@
 Typefactory.setup do |config|
-  config.quotes_marks = [
-    { :left => "&laquo;", :right => "&raquo;" },
-    { :left => "&bdquo;", :right => "&ldquo;" },
-    { :left => "&lsquo;", :right => "&rsquo;" }
+
+  config.quote_marks = [
+    { :left => '«', :right => '»' },
+    { :left => '„', :right => '“' },
+    { :left => '‘', :right => '’' }
   ]
-  config.non_breaking_space = "&nbsp;"
+
 end

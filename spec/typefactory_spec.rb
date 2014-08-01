@@ -1,40 +1,56 @@
 require 'spec_helper'
 
-RSpec.describe 'Тайпфектори' do
+RSpec.describe 'Typefactory' do
 
-  describe 'Ядро' do
-    it 'Нормально конфигурируется' do
+  describe 'Core' do
+    it 'Parameters can be updated successfully' do
       Typefactory.setup do |config|
-        config.quotes_marks = [
-          { :left => "«", :right => "»" },
-          { :left => "„", :right => "“" },
-          { :left => "‘", :right => "’" }
+        config.quote_marks = [
+          { :left => '«', :right => '»' },
+          { :left => '„', :right => '“' },
+          { :left => '‘', :right => '’' }
         ]
-        expect(config.quotes_marks.class).to eq(Array)
-
-        config.non_breaking_space = '&nbsp;'
-        expect(config.non_breaking_space.class).to eq(String)
+        expect(config.quote_marks.class).to eq(Array)
+        expect(config.quote_marks[2][:right]).to eq('’')
       end
     end
   end
 
-  describe 'Текстовый процессор' do
-    it 'Корректно распознает три уровня кавычек' do
-      example = '"""Нормальная" обработка" кавычек"'
-      expect(example.typeit).to eq('«„‘Нормальная’ обработка“ кавычек»')
+  describe 'Quotation (basic examples)' do
+    it 'Processing first level' do
+      example = 'Типовой "текст" в кавычках'
+      expect(example.prepare).to eq('Типовой «текст» в кавычках')
+    end
+
+    it 'Processing second level' do
+      example = '"Различные "ученые" от пикап-индустрии"'
+      expect(example.prepare).to eq('«Различные „ученые“ от пикап-индустрии»')
+    end
+
+    it 'Processing third level' do
+      example = '"Быть может, когда-нибудь "все мы будем жить в "лучшем" мире""'
+      expect(example.prepare).to eq('«Быть может, когда-нибудь „все мы будем жить в ‘лучшем’ мире“»')
+    end
+  end
+
+
+  describe 'Quotation (complicated exampled)' do
+    it 'processing marks in start/end positions' do
+      example = '"""Никакой" другой" типограф"'
+      expect(example.prepare).to eq('«„‘Никакой’ другой“ типограф»')
     end
 
     it 'Корректно распознает один уровень кавычек в составных словах с дефисом' do
       example = 'Кавычки-"елочки"'
-      expect(example.typeit).to eq('Кавычки-«елочки»')
+      expect(example.prepare).to eq('Кавычки-«елочки»')
 
       example = '"Елочки"-сосны'
-      expect(example.typeit).to eq('«Елочки»-сосны')
+      expect(example.prepare).to eq('«Елочки»-сосны')
     end
 
     it 'Расставляет неразрывные пробелы' do
       example = 'Едет Санта на оленях'
-      expect(example.typeit).to eq('Едет Санта на&nbsp;оленях')
+      expect(example.prepare).to eq('Едет Санта на оленях')
     end
   end
 
