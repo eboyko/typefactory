@@ -27,7 +27,9 @@ Typefactory adds method `prepare` for standard Ruby class `String`. You can use 
 ## Customize
 
 Need customization? Please use generator:
+
 	$ rails generate typefactory config
+	
 Now you can modify `config/initializers/typefactory.rb`
 
 ## Help to improve
