@@ -32,8 +32,10 @@ module Typefactory
 
       # Replacing quote marks
       expression = String.new
-      Typefactory::quote_marks.each do |mark|
-        expression += "#{mark[:left]}|#{mark[:right]}|"
+      Typefactory::quote_marks[Typefactory::locale].each do |m|
+        expression += "#{m[:left][:sign]}|#{m[:right][:sign]}|"
+        expression += "#{m[:left][:letter_code]}|#{m[:right][:letter_code]}|"
+        expression += "#{m[:left][:digital_code]}|#{m[:right][:digital_code]}|"
       end
       @buffer.gsub!(/#{expression[0..-2]}/, Typefactory::glyphs[:quot][:mark])
 
@@ -56,9 +58,9 @@ module Typefactory
           side = quote_mark_side(index)
           if side == :left
             level  += 1
-            result += Typefactory::quote_marks[level][side]
+            result += Typefactory::quote_marks[Typefactory::locale][level][side][Typefactory::use]
           else
-            result += Typefactory::quote_marks[level][side]
+            result += Typefactory::quote_marks[Typefactory::locale][level][side][Typefactory::use]
             level  -= 1
           end
         else
@@ -105,11 +107,15 @@ module Typefactory
     end
 
     def short_words
-      @buffer.gsub!(/\s([a-zA-Z,а-яА-Я]{1,2})\s/) { |word| " #{$1}#{Typefactory::glyphs[:nbsp][:sign]}" }
+      @buffer.gsub!(/(\s|;)([a-z,A-Z,а-я,А-Я]{1,2})\s(\S)/) do
+        "#{$1}#{$2}#{Typefactory::glyphs[:nbsp][Typefactory::use]}#{$3}"
+      end
     end
 
     def emdashes
-      @buffer.gsub!(/\s\-\s/, "#{Typefactory::glyphs[:nbsp][:sign]}#{Typefactory::glyphs[:mdash][:sign]} ")
+      @buffer.gsub!(/\s\-\s/) do
+        "#{Typefactory::glyphs[:nbsp][Typefactory::use]}#{Typefactory::glyphs[:mdash][Typefactory::use]} "
+      end
     end
 
   end
