@@ -40,13 +40,8 @@ module Typefactory
     nbsp:  { mark: ' ', symbol: ' ', entity: '&nbsp;', decimal: '&#160;' },
     quot:  { mark: '"', symbol: '"', entity: '&quot;', decimal: '&#34;' },
     mdash: { mark: '-', symbol: '—', entity: '&mdash;', decimal: '&#151;' },
-    copy:  { mark: '(c)', symbol: '©', entity: '&copy;', decimal: '&#169;' },
-    apos:  { mark: '\'', symbol: '’', entity: '&rsquo;', decimal: '&#146;' }
+    copy:  { mark: '(c)', symbol: '©', entity: '&copy;', decimal: '&#169;' }
   }
-
-  def self.setup
-    yield self
-  end
 
   def self.prepare(text)
     Processor.new(text).prepare

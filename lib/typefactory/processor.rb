@@ -23,11 +23,11 @@ module Typefactory
 
     def cleanup
       GLYPHS.each do |key, glyph|
-        expression = "#{glyph[:symbol]}|#{glyph[:entity]}|#{glyph[:decimal]}"
-        @buffer.gsub!(/#{expression}/) do
+        @buffer.gsub!(/#{glyph[:entity]}|#{glyph[:decimal]}|#{glyph[:symbol]}/) do
           glyph[:mark]
         end
       end
+
       expression = ''
       QUOTES.each_pair do |locale, quotes|
         quotes.each do |level|
@@ -59,10 +59,12 @@ module Typefactory
           side = quote_mark_side(index)
           if side == :left
             level  += 1
+            level  = QUOTES[LOCALE].length - 1 if level > QUOTES[LOCALE].length - 1
             result += QUOTES[LOCALE][level][side][MODE]
           else
             result += QUOTES[LOCALE][level][side][MODE]
             level  -= 1
+            level  = -1 if level < -1
           end
         else
           result += character
@@ -108,7 +110,7 @@ module Typefactory
     end
 
     def process_short_words
-      @buffer.gsub!(/(\s|;)([a-z,A-Z,а-я,А-Я]{1,2})\s(\S)/) do
+      @buffer.gsub!(/(\s)([a-z,A-Z,а-я,А-Я]{1,2})\s(\S)/) do
         "#{$1}#{$2}#{GLYPHS[:nbsp][MODE]}#{$3}"
       end
     end
