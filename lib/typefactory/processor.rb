@@ -4,53 +4,54 @@ module Typefactory
 
     @buffer = nil
 
-    # @param original [String] a text for preparing
     def initialize(original)
       @buffer = original
     end
 
-    # @return [String] web-prepared text
     def prepare
       cleanup
-      escape_html
-      quotes
-      descape_html
-      emdashes
-      short_words
+      preserve_html
+      process_quotes
+      revive_html
+      process_emdaches
+      process_short_words
+
       @buffer
     end
 
     private
 
-    # Purging text from already replaced glyphs (includes quotation marks of whole levels)
     def cleanup
-
-      # Replacing all special chars to human-like marks
-      Typefactory::glyphs.each do |glyph, settings|
-        @buffer.gsub!(/#{settings[:sign]}|#{settings[:letter_code]}|#{settings[:digital_code]}/, settings[:mark])
+      GLYPHS.each do |key, glyph|
+        expression = "#{glyph[:symbol]}|#{glyph[:entity]}|#{glyph[:decimal]}"
+        @buffer.gsub!(/#{expression}/) do
+          glyph[:mark]
+        end
       end
-
-      # Replacing quote marks
-      expression = String.new
-      Typefactory::quote_marks[Typefactory::locale].each do |m|
-        expression += "#{m[:left][:sign]}|#{m[:right][:sign]}|"
-        expression += "#{m[:left][:letter_code]}|#{m[:right][:letter_code]}|"
-        expression += "#{m[:left][:digital_code]}|#{m[:right][:digital_code]}|"
+      expression = ''
+      QUOTES.each_pair do |locale, quotes|
+        quotes.each do |level|
+          level.each do |side, glyph|
+            expression += "#{glyph[:symbol]}|#{glyph[:entity]}|#{glyph[:decimal]}|"
+          end
+        end
       end
-      @buffer.gsub!(/#{expression[0..-2]}/, Typefactory::glyphs[:quot][:mark])
-
+      @buffer.gsub!(/#{expression[0..-2]}/, GLYPHS[:quot][:mark])
     end
 
-    def escape_html
-      @buffer.gsub!(/<([^\/].*?)>/) { |block| block.gsub(/"/, '\'') }
+    def preserve_html
+      @buffer.gsub!(/<([^\/].*?)>/) do |tag|
+        tag.gsub(/"/, '\'')
+      end
     end
 
-    def descape_html
-      @buffer.gsub!(/<([^\/].*?)>/) { |block| block.gsub(/'/, '"') }
+    def revive_html
+      @buffer.gsub!(/<([^\/].*?)>/) do |tag|
+        tag.gsub(/'/, '"')
+      end
     end
 
-    # Quotes
-    def quotes
+    def process_quotes
       result = String.new
       level  = -1
       @buffer.split('').each_with_index do |character, index|
@@ -58,9 +59,9 @@ module Typefactory
           side = quote_mark_side(index)
           if side == :left
             level  += 1
-            result += Typefactory::quote_marks[Typefactory::locale][level][side][Typefactory::use]
+            result += QUOTES[LOCALE][level][side][MODE]
           else
-            result += Typefactory::quote_marks[Typefactory::locale][level][side][Typefactory::use]
+            result += QUOTES[LOCALE][level][side][MODE]
             level  -= 1
           end
         else
@@ -106,15 +107,15 @@ module Typefactory
       end
     end
 
-    def short_words
+    def process_short_words
       @buffer.gsub!(/(\s|;)([a-z,A-Z,а-я,А-Я]{1,2})\s(\S)/) do
-        "#{$1}#{$2}#{Typefactory::glyphs[:nbsp][Typefactory::use]}#{$3}"
+        "#{$1}#{$2}#{GLYPHS[:nbsp][MODE]}#{$3}"
       end
     end
 
-    def emdashes
+    def process_emdaches
       @buffer.gsub!(/\s\-\s/) do
-        "#{Typefactory::glyphs[:nbsp][Typefactory::use]}#{Typefactory::glyphs[:mdash][Typefactory::use]} "
+        "#{GLYPHS[:nbsp][MODE]}#{GLYPHS[:mdash][MODE]} "
       end
     end
 

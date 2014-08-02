@@ -5,55 +5,49 @@ module Typefactory
 
   autoload :Processor, 'typefactory/processor'
 
-  @@locale = :ru
-  mattr_accessor :locale
+  MODE = :entity
 
-  @@use = :letter_code
-  mattr_accessor :use
+  LOCALE = :ru
 
-  @@quote_marks = {
+  QUOTES = {
     ru: [
-      {
-        left:  { mark: '"', sign: '«', letter_code: '&laquo;', digital_code: '&#171;' },
-        right: { mark: '"', sign: '»', letter_code: '&raquo;', digital_code: '&#187;' },
-      }, {
-        left:  { mark: '"', sign: '„', letter_code: '&bdquo;', digital_code: '&#8222;' },
-        right: { mark: '"', sign: '“', letter_code: '&ldquo;', digital_code: '&#8220;' },
-      }, {
-        left:  { mark: '"', sign: '‘', letter_code: '&lsquo;', digital_code: '&#8216;' },
-        right: { mark: '"', sign: '’', letter_code: '&rsquo;', digital_code: '&#8217;' }
-      }
-    ]
+          {
+            left:  { mark: '"', symbol: '«', entity: '&laquo;', decimal: '&#171;' },
+            right: { mark: '"', symbol: '»', entity: '&raquo;', decimal: '&#187;' }
+          },
+          {
+            left:  { mark: '"', symbol: '„', entity: '&bdquo;', decimal: '&#132;' },
+            right: { mark: '"', symbol: '“', entity: '&ldquo;', decimal: '&#147;' }
+          },
+          {
+            left:  { mark: '"', symbol: '‘', entity: '&lsquo;', decimal: '&#145;' },
+            right: { mark: '"', symbol: '’', entity: '&rsquo;', decimal: '&#146;' }
+          }
+        ],
+    en: [
+          {
+            left:  { mark: '"', symbol: '“', entity: '&ldquo;', decimal: '&#147;' },
+            right: { mark: '"', symbol: '”', entity: '&rdquo;', decimal: '&#148;' }
+          },
+          {
+            left:  { mark: '"', symbol: '‘', entity: '&lsquo;', decimal: '&#145;' },
+            right: { mark: '"', symbol: '’', entity: '&rsquo;', decimal: '&#146;' }
+          }
+        ]
   }
-  mattr_accessor :quote_marks
 
-  @@glyphs = {
-    nbsp:  { mark: ' ', sign: ' ', letter_code: '&nbsp;', digital_code: '&#160;' },
-    quot:  { mark: '"', sign: '"', letter_code: '&quot;', digital_code: '&#34;' },
-    mdash: { mark: '-', sign: '—', letter_code: '&mdash;', digital_code: '&#151;' }
-    # :nbsp       => ' ',
-    # :ndash      => '–',
-    # :mdash      => '&mdash;',
-    # :minus      => '−',
-    # :section    => '§',
-    # :paragraph  => '¶',
-    # :copy       => '©',
-    # :registered => '®',
-    # :trademark  => '™',
-    # :degree     => '°',
-    # :inch       => '″',
-    # :multiple   => '×',
-    # :middot     => '·',
-    # :bullit     => '•',
-    # :quot       => '"'
+  GLYPHS = {
+    nbsp:  { mark: ' ', symbol: ' ', entity: '&nbsp;', decimal: '&#160;' },
+    quot:  { mark: '"', symbol: '"', entity: '&quot;', decimal: '&#34;' },
+    mdash: { mark: '-', symbol: '—', entity: '&mdash;', decimal: '&#151;' },
+    copy:  { mark: '(c)', symbol: '©', entity: '&copy;', decimal: '&#169;' },
+    apos:  { mark: '\'', symbol: '’', entity: '&rsquo;', decimal: '&#146;' }
   }
-  mattr_accessor :glyphs
 
   def self.setup
     yield self
   end
 
-  # @note In next versions here will be `settings`
   def self.prepare(text)
     Processor.new(text).prepare
   end
