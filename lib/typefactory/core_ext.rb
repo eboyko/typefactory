@@ -1,7 +1,5 @@
 String.class_eval do
-
-  def prepare
-    Typefactory::prepare(self)
+  def prepare(*settings)
+    Typefactory::prepare(self, *settings)
   end
-
 end
