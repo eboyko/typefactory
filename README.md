@@ -1,40 +1,44 @@
-# Typefactory
+# Тайпфектори
 
-This simple plugin helps you to prepare your texts for publishing on the web. Typefactory was created for Russian grammar and punctuation but can be used in other languages (such as English or German).
+Этот небольшой плагин поможет вам подготовить тексты к публикации в вебе. Тайпфектор разрабатывался для русского языка, но может быть легко адаптирован для других языков (к примеру, для англо-германской группы).
 
-_This is my first gem and I'll be glad to hear from you any advices about Ruby/Rails as well as about my English :-)_
+_Тайпфектори — мой первый гем и я буду благодарен за любую критику_
 
-## Abilities
+## Возможности
 
-Current beta version has only methods for processing three levels of quote marks. All used glyphs can be customized.
+Текущая версия расставляет:
+* правильные многоуровневые кавычки;
+* неразрывные проблелы после коротких слов;
+* длинные тире.
 
-## Install
 
-### Ruby on Rails
+## Установка
 
-	$ gem "typefactory", "~> 0.0.10"
+### Ruby on rails
+
+	$ gem "typefactory", "~> 0.0.20"
 	$ bundle install
 	
 
-### Extension for `String`
+### Метод в классе String
 
-Typefactory adds method `prepare` for standard Ruby class `String`. You can use this feature as well as default way.
+Тайпфектори добавляет метод `prepare` в стандартный класс `String`, который вы также можете использовать:
 
-	'Some text here'.prepare
+	'Правильно "оформленный" в вебе текст'.prepare
 	<%= @description.prepare %>
 
 
-## Customize
+## Настройка
 
-Need customization? Please use generator:
+Сгенерируйте шаблон файла настроек:
 
 	$ rails generate typefactory config
 	
-Now you can modify `config/initializers/typefactory.rb`
+Отредактируте параметры в файле `config/initializers/typefactory.rb` по своему усмотрению
 
-## Help to improve
+## Помогите улучшить
 
-If you have text where parsing algorithm makes mistakes, send it to me (eboyko@eboyko.ru), please.
+Если вы нашли ошибку в работе алгоритма, пришлите исходный текст по электронной почте: eboyko@eboyko.ru
 
 ## Contribute
 
