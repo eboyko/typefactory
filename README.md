@@ -34,7 +34,7 @@ _Тайпфектори — мой первый гем и я буду благо
 
 	$ rails generate typefactory config
 	
-Отредактируте параметры в файле `config/initializers/typefactory.rb` по своему усмотрению
+Отредактируйте параметры в файле `config/initializers/typefactory.rb` по своему усмотрению
 
 ## Помогите улучшить
 
